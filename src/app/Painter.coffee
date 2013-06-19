@@ -303,7 +303,7 @@ define ['jquery', 'kinetic', './Utils'], ($, K, Utils) ->
                 y: y
                 oldY: y
                 width: width
-                fontSize: 28
+                fontSize: 26
                 fill: colors.black
                 fontFamily: font_family
                 align: 'center'
