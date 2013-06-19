@@ -1,0 +1,8 @@
+#! /bin/sh
+
+coffee --output js --compile src
+node tools/r.js -o tools/build.js
+rm -r js
+mv build/common.js dist/javascripts/common.js
+mv build/app/main.js dist/javascripts/app/main.js
+rm -r build
