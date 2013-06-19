@@ -20,6 +20,7 @@ define ['jquery', 'kinetic', './Utils'], ($, K, Utils) ->
             blue: '#8ED8F8'
             red: 'red'
         font_family = '"Lucida Console", Monaco, monospace'
+        rect_height = 22
 
         K.Rect::rightX = ->
             @getX() + @getWidth()
@@ -27,7 +28,7 @@ define ['jquery', 'kinetic', './Utils'], ($, K, Utils) ->
         # Represents the basic label rectangle
         basicRect = new K.Rect
             width: 30
-            height: 25
+            height: rect_height
             stroke: colors.black
             strokeWidth: 1.5
 
@@ -52,7 +53,7 @@ define ['jquery', 'kinetic', './Utils'], ($, K, Utils) ->
                 fontFamily: 'Calibri'
                 fontSize: 12
                 align: 'center'
-            label.setY((rect.getHeight() - label.getHeight()) / 2)
+            label.setY((rect.getHeight() - label.getHeight()) / 2 + 1)
 
             @add rect
             @add label
@@ -64,7 +65,7 @@ define ['jquery', 'kinetic', './Utils'], ($, K, Utils) ->
                 width: width
                 fill: color
                 x: x
-                height: 25
+                height: rect_height
                 stroke: colors.black
                 strokeWidth: 1.5
             @add rect
@@ -72,7 +73,7 @@ define ['jquery', 'kinetic', './Utils'], ($, K, Utils) ->
                 label = new K.Text
                     fill: colors.black
                     fontFamily: font_family
-                    fontSize: 11
+                    fontSize: 10
                     align: 'center'
                     width: width
                     x: x
@@ -193,13 +194,13 @@ define ['jquery', 'kinetic', './Utils'], ($, K, Utils) ->
             for i in [0..7]
                 rect = basicRect.clone
                     x: (i % 4) * width
-                    y: Math.floor(i / 4) * 25
+                    y: Math.floor(i / 4) * rect_height
                     fill: colors.white
                     width: width
                 text = new K.Text
                     fill: colors.black
                     fontFamily: font_family
-                    fontSize: 11
+                    fontSize: 10
                     align: 'center'
                     x: rect.getX()
                     width: width
@@ -307,7 +308,7 @@ define ['jquery', 'kinetic', './Utils'], ($, K, Utils) ->
                 fontFamily: font_family
                 align: 'center'
                 text: name
-            text.setY(text.getAttr('oldY') + (58 - text.getHeight()) / 2)
+            text.setY(text.getAttr('oldY') + (58 - text.getHeight()) / 2 + 1)
             mainLayer.add(text)
 
         # Generate a line
@@ -635,7 +636,7 @@ define ['jquery', 'kinetic', './Utils'], ($, K, Utils) ->
                     name = text.getName()
                     value = variables[text.getId()]
                     deal(text, name, value)
-                    text.setY(text.getAttr('oldY') + (58 - text.getHeight()) / 2)
+                    text.setY(text.getAttr('oldY') + (58 - text.getHeight()) / 2 + 1)
                 lines = mainLayer.get('Line')
                 lines.each (line) ->
                     name = line.getName()
@@ -649,7 +650,7 @@ define ['jquery', 'kinetic', './Utils'], ($, K, Utils) ->
                     name = label.labelName
                     value = variables[key]
                     deal(label, name, value)
-                    label.setY((25 - label.getHeight()) / 2)
+                    label.setY((rect_height - label.getHeight()) / 2 + 1)
 
                 # Show reigister
                 if registerTexts.length > 0
@@ -659,7 +660,7 @@ define ['jquery', 'kinetic', './Utils'], ($, K, Utils) ->
                         label.setFill(colors.black)
                         rect = registerRects[i]
                         rect.setFill(colors.white)
-                        label.setY(rect.getY() + (25 - label.getHeight()) / 2)
+                        label.setY(rect.getY() + (rect_height - label.getHeight()) / 2 + 1)
                     renderDstBG = (dst) ->
                         if dst? and dst isnt 0xf
                             registerRects[dst].setFill(colors.blue)
@@ -671,5 +672,5 @@ define ['jquery', 'kinetic', './Utils'], ($, K, Utils) ->
                 if ccTexts.length > 0
                     for i in [0..2]
                         ccTexts[i].setText(ccNames[i] + ': ' + (cc[i] | 0))
-                        ccTexts[i].setY(10 + (25 - ccTexts[i].getHeight()) / 2)
+                        ccTexts[i].setY(10 + (rect_height - ccTexts[i].getHeight()) / 2 + 1)
             mainLayer.draw()
