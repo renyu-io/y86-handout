@@ -19,6 +19,7 @@ define ['jquery', 'kinetic', './Utils'], ($, K, Utils) ->
             black: 'black'
             blue: '#8ED8F8'
             red: 'red'
+        font_family = '"Lucida Console", Monaco, monospace'
 
         K.Rect::rightX = ->
             @getX() + @getWidth()
@@ -70,7 +71,7 @@ define ['jquery', 'kinetic', './Utils'], ($, K, Utils) ->
             if text
                 label = new K.Text
                     fill: colors.black
-                    fontFamily: 'Consolas'
+                    fontFamily: font_family
                     fontSize: 11
                     align: 'center'
                     width: width
@@ -197,7 +198,7 @@ define ['jquery', 'kinetic', './Utils'], ($, K, Utils) ->
                     width: width
                 text = new K.Text
                     fill: colors.black
-                    fontFamily: 'Consolas'
+                    fontFamily: font_family
                     fontSize: 11
                     align: 'center'
                     x: rect.getX()
@@ -216,7 +217,7 @@ define ['jquery', 'kinetic', './Utils'], ($, K, Utils) ->
                     width: width
                 text = new K.Text
                     fill: colors.black
-                    fontFamily: 'Consolas'
+                    fontFamily: font_family
                     align: 'center'
                     fontSize: 11
                     x: rect.getX()
@@ -242,7 +243,7 @@ define ['jquery', 'kinetic', './Utils'], ($, K, Utils) ->
                 fontSize: 15
                 fill: colors.blue
                 padding: 10
-                fontFamily: 'Consolas'
+                fontFamily: font_family
                 shadowColor: colors.black
                 shadowBlur: -1
                 shadowOffset: 1
@@ -303,7 +304,7 @@ define ['jquery', 'kinetic', './Utils'], ($, K, Utils) ->
                 width: width
                 fontSize: 28
                 fill: colors.black
-                fontFamily: 'Consolas'
+                fontFamily: font_family
                 align: 'center'
                 text: name
             text.setY(text.getAttr('oldY') + (58 - text.getHeight()) / 2)
