@@ -234,7 +234,7 @@ define ['./Utils'], (Utils) ->
                     log "\tFetch: f_pc = #{n2h(v.f_pc)}, imem_instr = #{iname[instr]}, f_instr = #{iname[hpack(v.f_icode, v.f_ifun)]}"
 
                 v.instr_valid =
-                    v.f_icode in [I_NOP, I_HALT, I_RRMOVL, I_IRMOVL, I_MRMOVL, I_OPL, I_JXX, I_CALL, I_RET, I_PUSHL, I_POPL]
+                    v.f_icode in [I_NOP, I_HALT, I_RRMOVL, I_IRMOVL, I_RMMOVL, I_MRMOVL, I_OPL, I_JXX, I_CALL, I_RET, I_PUSHL, I_POPL]
                 if not v.instr_valid
                     log "\tFetch: Instruction code #{n2h(instr)} invalid"
 
