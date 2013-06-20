@@ -1,0 +1,69 @@
+                      | /* $begin code */
+                      | # This is a light version of copy.ys to test 
+                      | # rrmovl, irmovl, rmmovl, mrmovl, call, ret,
+                      | # pushl, popl
+                      | # Execution begins at address 0 
+  0x000:              | 	.pos 0 
+  0x000: 30f400010000 | init:	irmovl Stack, %esp  	# Set up stack pointer  
+  0x006: 30f500010000 | 	irmovl Stack, %ebp  	# Set up base pointer   
+  0x00c: 801c000000   | 	call Main		# Execute main program
+  0x011: 00           | 	halt			# Terminate program 
+                      | 
+  0x014:              | 	.align 4 
+                      | # Source block	
+  0x014: 0a000000     | src:	.long 0x00a
+                      | 
+                      | # Destination block
+  0x018: 11010000     | dest:	.long 0x111	
+                      | 
+  0x01c: a05f         | Main:	pushl %ebp 
+  0x01e: 2045         | 	rrmovl %esp,%ebp
+  0x020: 30f001000000 | 	irmovl $1,%eax	
+  0x026: a00f         | 	pushl %eax		# Push 1
+  0x028: 30f218000000 | 	irmovl dest,%edx
+  0x02e: a02f         | 	pushl %edx      	# Push dest
+  0x030: 30f214000000 | 	irmovl src, %edx
+  0x036: a02f         | 	pushl %edx		# Push src
+  0x038: 8042000000   | 	call copy_block		# copy_block(src, dest, 1)
+  0x03d: 2054         | 	rrmovl %ebp,%esp
+  0x03f: b05f         | 	popl %ebp
+  0x041: 90           | 	ret 
+                      | 
+                      | /* $begin copy-ys */
+                      | 	# int copy_block(int *src, int *dest, int len)
+  0x042:              | copy_block:
+  0x042: a05f         | 	pushl %ebp		# Save old frame pointer
+  0x044: 2045         | 	rrmovl %esp, %ebp	# Set up new frame pointer
+  0x046: a06f         | 	pushl %esi		# Save callee-save regs
+  0x048: a03f         | 	pushl %ebx
+  0x04a: a07f         | 	pushl %edi
+  0x04c: 501508000000 | 	mrmovl 8(%ebp), %ecx 	# ecx = src
+  0x052: 50250c000000 | 	mrmovl 12(%ebp), %edx	# edx = dest
+  0x058: 503510000000 | 	mrmovl 16(%ebp), %ebx	# ebx = len
+  0x05e: 6300         | 	xorl %eax,%eax		# result = 0
+  0x060: 6233         | 	andl   %ebx,%ebx	# len <= 0?
+  0x062: 718e000000   | 	jle     End		# jump to End
+                      | 
+  0x067: 506100000000 | Loop:	mrmovl (%ecx), %esi	# val = *src
+  0x06d: 30f704000000 | 	irmovl $0x4, %edi
+  0x073: 6071         | 	addl %edi, %ecx		# *src++
+  0x075: 406200000000 | 	rmmovl %esi, (%edx)	# *dest = val
+  0x07b: 6072         | 	addl %edi, %edx		# *dest++
+  0x07d: 6360         | 	xorl %esi, %eax		# result ^= val
+  0x07f: 30f701000000 | 	irmovl $0x1, %edi
+  0x085: 6173         | 	subl %edi, %ebx		# len--
+  0x087: 6233         | 	andl %ebx,%ebx          # len > 0?
+  0x089: 7667000000   | 	jg    Loop             	# if so, jump to Loop
+                      | 
+  0x08e: b07f         | End:	popl %edi               # Restore callee-save registers
+  0x090: b03f         | 	popl %ebx
+  0x092: b06f         | 	popl %esi
+  0x094: 2054         | 	rrmovl %ebp, %esp
+  0x096: b05f         | 	popl %ebp
+  0x098: 90           | 	ret
+                      | /* $end copy-ys */
+                      | 
+                      | # The stack starts here and grows to lower addresses
+  0x100:              | 	.pos 0x100		
+  0x100:              | Stack:	 
+                      | /* $end code */

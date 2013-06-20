@@ -1,0 +1,42 @@
+                      | /* $begin code */
+                      | # This is to test addl, subl, andl, xorl, 
+                      | # jxx, nop, halt
+                      | # Execution begins at address 0 
+  0x000:              | 	.pos 0 
+  0x000: 30f400010000 | init:	irmovl Stack, %esp  	# Set up stack pointer  
+  0x006: 30f500010000 | 	irmovl Stack, %ebp  	# Set up base pointer   
+  0x00c: 8012000000   | 	call Main		# Execute main program
+  0x011: 00           | 	halt			# Terminate program 	
+                      | 
+  0x012: a05f         | Main:	pushl %ebp 
+  0x014: 2045         | 	rrmovl %esp,%ebp
+  0x016: 6300         | 	xorl %eax, %eax
+  0x018: 30f304000000 | 	irmovl $4, %ebx
+  0x01e: 6030         | 	addl %ebx, %eax
+  0x020: 6230         | 	andl %ebx, %eax
+  0x022: 30f304000000 | 	irmovl $4, %ebx
+  0x028: 6130         | 	subl %ebx, %eax
+  0x02a: 7134000000   | 	jle LE
+  0x02f: 7654000000   | 	jg G
+  0x034: 7249000000   | LE:	jl L
+  0x039: 733e000000   | 	je E	
+  0x03e: 30f009000000 | E:	irmovl $9, %eax		#equal
+  0x044: 705f000000   | 	jmp END
+  0x049: 30f001000000 | L:	irmovl $1, %eax		#less
+  0x04f: 705f000000   | 	jmp END
+  0x054: 30f003000000 | G:	irmovl $3, %eax		#greater
+  0x05a: 705f000000   | 	jmp END
+  0x05f: 7469000000   | END:	jne NE
+  0x064: 706b000000   | 	jmp FIN
+  0x069: 6000         | NE:	addl %eax, %eax		#not equal	
+  0x06b: 10           | FIN:	nop	
+  0x06c: 2054         | 	rrmovl %ebp,%esp
+  0x06e: b05f         | 	popl %ebp
+  0x070: 90           | 	ret 
+                      | 
+                      | /* $end copy-ys */
+                      | 
+                      | # The stack starts here and grows to lower addresses
+  0x100:              | 	.pos 0x100		
+  0x100:              | Stack:	 
+                      | /* $end code */

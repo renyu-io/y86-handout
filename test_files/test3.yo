@@ -1,0 +1,15 @@
+                      | # Test CombinationB
+  0x000: 30f340000000 | irmovl mem, %ebx
+  0x006: 504300000000 | mrmovl 0(%ebx),%esp
+  0x00c: 90           | ret
+  0x00d: 00           | halt
+  0x00e:              | rtnpt:
+  0x00e: 30f605000000 | irmovl $5, %esi
+  0x014: 00           | halt
+  0x040:              | .pos 0x40
+  0x040:              | .align 4
+  0x040:              | mem:
+  0x040: 50000000     | .long stack
+  0x050:              | .pos 0x50
+  0x050:              | stack:
+  0x050: 0e000000     | .long rtnpt
